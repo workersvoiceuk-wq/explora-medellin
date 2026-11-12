@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Explora Medellín — Guía Turística Interactiva (ES · EN · PT · FR)</title>
-  <meta name="description" content="Aplicación web turística multilingüe (Español, English, Português, Français) de Medellín, Colombia: mapa interactivo del Valle de Aburrá, rutas del Metro y Metrocable, planificador de itinerarios, gastronomía paisa y calculadora de presupuesto." />
+  <title>Explora Medellín — Guía Turística &amp; Recorrido Interactivo Comuna 13 (ES · EN · PT · FR)</title>
+  <meta name="description" content="Aplicación web turística multilingüe (ES, EN, PT, FR) de Medellín, Colombia: Recorrido interactivo paso a paso de la Comuna 13 (historia, Operación Mariscal/Orión, Casa Kolacho, AgroArte, Son Batá, Escaleras Eléctricas y murales), mapa del Valle de Aburrá, rutas Metro y calculadora de presupuesto." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -56,6 +56,9 @@
       <nav aria-label="Main sections" class="main-nav">
         <button id="tab-btn-explorar" type="button" data-tab="explorar" class="nav-tab active">
           <span id="ui-tab-explorar">🗺️ Destinos &amp; Mapa</span>
+        </button>
+        <button id="tab-btn-comuna13" type="button" data-tab="comuna13" class="nav-tab">
+          <span id="ui-tab-comuna13">🎨 Tour Comuna 13 (Interactivo)</span>
         </button>
         <button id="tab-btn-itinerario" type="button" data-tab="itinerario" class="nav-tab">
           <span id="ui-tab-itinerario">📅 Mi Itinerario</span>
@@ -117,41 +120,143 @@
             </svg>
           </div>
 
-          <div id="valley-stats-container" class="valley-stats-row">
-            <!-- Renderizado por app.js -->
-          </div>
+          <div id="valley-stats-container" class="valley-stats-row"></div>
         </div>
 
         <!-- Panel Inspector del Destino Activo -->
-        <aside id="destination-inspector" class="card" aria-live="polite">
-          <!-- Renderizado por app.js -->
-        </aside>
+        <aside id="destination-inspector" class="card" aria-live="polite"></aside>
       </div>
 
       <!-- Barra de Filtros y Búsqueda -->
       <div class="card">
         <div class="filter-bar">
-          <div id="category-filters" class="category-pills" role="group" aria-label="Category filter">
-            <!-- Renderizado por app.js -->
-          </div>
+          <div id="category-filters" class="category-pills" role="group" aria-label="Category filter"></div>
 
           <div class="search-controls">
             <input id="search-destinations" type="search" class="input-field" placeholder="Buscar lugar, barrio, estación..." aria-label="Search destinations" />
-            <select id="cost-filter" class="select-field" aria-label="Filter by budget">
-              <!-- Renderizado por app.js -->
-            </select>
+            <select id="cost-filter" class="select-field" aria-label="Filter by budget"></select>
           </div>
         </div>
       </div>
 
       <!-- Cuadrícula de Destinos -->
-      <div id="destinations-grid" class="destinations-grid">
-        <!-- Renderizado por app.js -->
+      <div id="destinations-grid" class="destinations-grid"></div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- PESTAÑA 2: RECORRIDO INTERACTIVO COMUNA 13 (VoiceMap / Bloomberg Style)   -->
+    <!-- ========================================================================= -->
+    <section id="tab-panel-comuna13" class="tab-panel hidden">
+
+      <!-- Cabecera del Recorrido y Barra de Audioguía / Progreso -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span id="c13-badge-style" class="tag-badge">🎧 Experiencia Inmersiva · Estilo Bloomberg Connects &amp; VoiceMap</span>
+            <h2 id="c13-main-title" class="section-title" style="font-size: 1.25rem; margin-top: 0.35rem;">
+              Recorrido Interactivo Comuna 13: Memoria, Resistencia y Arte Urbano
+            </h2>
+            <p id="c13-main-subtitle" class="section-subtitle">
+              Ascenso guiado paso a paso (1.530 m → 1.685 m s.n.m.) por las 7 estaciones del Graffitour, los 6 tramos de las Escaleras Eléctricas de Las Independencias y el archivo histórico vivo del barrio.
+            </p>
+          </div>
+
+          <div id="c13-step-pills" class="stop-stepper-pills" role="group" aria-label="Comuna 13 tour stops"></div>
+        </div>
+
+        <!-- Barra de Narración por Voz (Web Speech API) y Controles de Paso -->
+        <div class="audio-guide-bar">
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <button id="btn-c13-audio" type="button" class="btn-primary">
+              <span id="c13-audio-label">🔊 Escuchar Audioguía de la Parada</span>
+            </button>
+            <span id="c13-progress-readout" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">
+              Parada 1 de 7 · Altitud: 1.530 m s.n.m.
+            </span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button id="btn-c13-prev" type="button" class="btn-outline">← Anterior</button>
+            <button id="btn-c13-next" type="button" class="btn-primary">Siguiente Parada →</button>
+          </div>
+        </div>
+
+        <!-- Vista Dividida: Mapa de Perfil de Elevación (Izquierda) + Relato de la Parada Activa (Derecha) -->
+        <div class="explorer-top-grid">
+
+          <!-- Perfil de Altitud y Sendero de Conexión Independencias (SVG Interactivo) -->
+          <div class="map-frame" style="padding: 0.9rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.76rem; color: var(--text-secondary);">
+              <strong id="c13-elevation-title">Perfil de Ascenso: Sendero Independencias (384 m de escaleras eléctricas)</strong>
+              <span id="c13-elevation-gain">+155 m desnivel · 28 pisos equivalentes</span>
+            </div>
+
+            <svg id="c13-elevation-svg" viewBox="0 0 660 320" class="valley-svg" role="img" aria-label="Interactive elevation profile of Comuna 13 walking tour">
+              <!-- Fondo de montaña escalonada de la Comuna 13 -->
+              <path d="M0,320 L0,265 L95,250 L185,225 L275,190 L375,145 L470,102 L575,58 L660,42 L660,320 Z" fill="var(--bg-surface)" opacity="0.88" />
+              <!-- Líneas de cota de altitud -->
+              <line x1="20" y1="265" x2="640" y2="265" stroke="var(--border-subtle)" stroke-dasharray="3 3" />
+              <line x1="20" y1="185" x2="640" y2="185" stroke="var(--border-subtle)" stroke-dasharray="3 3" />
+              <line x1="20" y1="105" x2="640" y2="105" stroke="var(--border-subtle)" stroke-dasharray="3 3" />
+              <text x="645" y="268" text-anchor="end" fill="var(--text-muted)" font-size="10" font-family="monospace">1.530 m</text>
+              <text x="645" y="188" text-anchor="end" fill="var(--text-muted)" font-size="10" font-family="monospace">1.600 m</text>
+              <text x="645" y="108" text-anchor="end" fill="var(--text-muted)" font-size="10" font-family="monospace">1.660 m</text>
+
+              <!-- Tramo de caminata urbana (Paradas 1 a 3) -->
+              <path d="M55,260 L150,238 L245,210" fill="none" stroke="var(--accent-metro)" stroke-width="4" stroke-linecap="round" />
+
+              <!-- Tramo de los 6 segmentos de Escaleras Eléctricas (Techo naranja icónico, Paradas 4 a 6) -->
+              <path d="M245,210 L345,165 L445,120 L540,78" fill="none" stroke="var(--accent-cable)" stroke-width="6" stroke-linecap="round" />
+
+              <!-- Viaducto Media Ladera y Mirador (Parada 7) -->
+              <path d="M540,78 L615,55" fill="none" stroke="var(--brand-primary)" stroke-width="4" stroke-dasharray="6 3" stroke-linecap="round" />
+
+              <!-- Nodos interactivos de las 7 paradas -->
+              <g id="c13-nodes-layer"></g>
+            </svg>
+
+            <div class="valley-stats-row" id="c13-quick-facts"></div>
+          </div>
+
+          <!-- Panel de Historia y Audio-Transcripción de la Parada Activa -->
+          <div id="c13-stop-detail" class="card" style="padding: 1.1rem;" aria-live="polite"></div>
+
+        </div>
       </div>
+
+      <!-- Línea de Tiempo Histórica Interactiva (5 Épocas de la Comuna 13) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 id="c13-timeline-heading" class="section-title">Archivo Histórico: Las 5 Épocas que Forjaron la Comuna 13</h3>
+            <p id="c13-timeline-subheading" class="section-subtitle">
+              Investigación documental basada en el Centro Nacional de Memoria Histórica, la Comisión de la Verdad y los colectivos culturales de San Javier.
+            </p>
+          </div>
+        </div>
+
+        <div id="c13-era-buttons" class="era-timeline-nav" role="tablist"></div>
+        <div id="c13-era-detail" class="tip-callout" style="margin-bottom: 0;"></div>
+      </div>
+
+      <!-- Decodificador de Murales y Simbología (Estilo Smartify / Google Arts & Culture) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 id="c13-murals-heading" class="section-title">Decodificador de Murales: Cómo Leer las Paredes de la Comuna 13</h3>
+            <p id="c13-murals-subheading" class="section-subtitle">
+              Cada obra en el Sendero Independencias es un documento etnográfico. Descubre qué significan sus símbolos y quiénes los pintaron.
+            </p>
+          </div>
+        </div>
+
+        <div id="c13-murals-grid" class="mural-decoder-grid"></div>
+      </div>
+
     </section>
 
     <!-- ======================================================== -->
-    <!-- PESTAÑA 2: PLANIFICADOR DE ITINERARIO                    -->
+    <!-- PESTAÑA 3: PLANIFICADOR DE ITINERARIO                    -->
     <!-- ======================================================== -->
     <section id="tab-panel-itinerario" class="tab-panel hidden">
       <div class="card">
@@ -197,19 +302,16 @@
           <button id="btn-itin-add-stop" type="button" class="btn-primary">+ Agregar al Día</button>
         </div>
 
-        <div id="itinerary-days-container">
-          <!-- Renderizado por app.js -->
-        </div>
+        <div id="itinerary-days-container"></div>
       </div>
     </section>
 
     <!-- ======================================================== -->
-    <!-- PESTAÑA 3: RUTAS METRO, METROCABLE & CONSEJOS            -->
+    <!-- PESTAÑA 4: RUTAS METRO, METROCABLE & CONSEJOS            -->
     <!-- ======================================================== -->
     <section id="tab-panel-metro" class="tab-panel hidden">
       <div class="two-col-grid">
 
-        <!-- Simulador de Rutas SITVA -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -229,29 +331,23 @@
             </div>
           </div>
 
-          <div id="metro-route-result" class="tip-callout">
-            <!-- Renderizado por app.js -->
-          </div>
+          <div id="metro-route-result" class="tip-callout"></div>
 
           <h3 id="ui-metro-lines-heading" class="section-title" style="margin: 1rem 0 0.5rem;">Líneas Esenciales del Sistema</h3>
           <div id="metro-lines-table-wrap"></div>
         </div>
 
-        <!-- Cultura Metro y Comparativa de Barrios -->
-        <div id="metro-practical-guide-card" class="card">
-          <!-- Renderizado por app.js -->
-        </div>
+        <div id="metro-practical-guide-card" class="card"></div>
 
       </div>
     </section>
 
     <!-- ======================================================== -->
-    <!-- PESTAÑA 4: GASTRONOMÍA PAISA & CALCULADORA PRESUPUESTO   -->
+    <!-- PESTAÑA 5: GASTRONOMÍA PAISA & CALCULADORA PRESUPUESTO   -->
     <!-- ======================================================== -->
     <section id="tab-panel-cultura" class="tab-panel hidden">
       <div class="two-col-grid">
 
-        <!-- Ruta Gastronómica Paisa -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -259,12 +355,9 @@
               <p id="ui-gastro-subtitle" class="section-subtitle">Platos típicos imperdibles y precios promedio actualizados a la moneda seleccionada.</p>
             </div>
           </div>
-          <div id="gastronomy-grid" class="gastronomy-grid">
-            <!-- Renderizado por app.js -->
-          </div>
+          <div id="gastronomy-grid" class="gastronomy-grid"></div>
         </div>
 
-        <!-- Calculadora de Presupuesto -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -299,9 +392,7 @@
               </div>
             </div>
 
-            <div id="budget-breakdown-bars" style="display: flex; flex-direction: column; gap: 0.75rem; padding-top: 0.5rem;">
-              <!-- Renderizado por app.js -->
-            </div>
+            <div id="budget-breakdown-bars" style="display: flex; flex-direction: column; gap: 0.75rem; padding-top: 0.5rem;"></div>
 
             <div class="inspector-meta-grid" style="margin-bottom: 0;">
               <div class="metric-card">

@@ -1,11 +1,10 @@
 /* ==========================================================================
    Explora Medellín — Sistema de Diseño (Vanilla CSS)
-   Inspirado en el paisaje del Valle de Aburrá: verde montaña, terracota
-   antioqueño, amarillo silletero y azul del Sistema Metro.
+   Inspirado en el paisaje del Valle de Aburrá y las mejores apps de
+   recorridos culturales del mundo (Bloomberg Connects, VoiceMap, Smartify).
    ========================================================================== */
 
 :root {
-  /* Paleta Modo Claro (Eterna Primavera) */
   --bg-page: hsl(42, 33%, 97%);
   --bg-surface: hsl(0, 0%, 100%);
   --bg-subtle: hsl(40, 25%, 94%);
@@ -18,7 +17,6 @@
   --border-color: hsl(40, 18%, 85%);
   --border-subtle: hsl(40, 18%, 90%);
 
-  /* Acentos temáticos de Medellín */
   --brand-primary: hsl(154, 62%, 28%);
   --brand-primary-hover: hsl(154, 65%, 22%);
   --brand-primary-fg: hsl(0, 0%, 100%);
@@ -29,7 +27,6 @@
   --accent-cable: hsl(28, 84%, 48%);
   --accent-danger: hsl(352, 74%, 48%);
 
-  /* Sombras con profundidad orgánica */
   --shadow-sm: 0 1px 3px rgba(18, 38, 30, 0.06), 0 1px 2px rgba(18, 38, 30, 0.04);
   --shadow-md: 0 8px 24px -4px rgba(18, 38, 30, 0.08), 0 2px 6px -1px rgba(18, 38, 30, 0.04);
   --radius-sm: 8px;
@@ -67,7 +64,6 @@ html[data-theme="dark"] {
   --shadow-md: 0 10px 28px -6px rgba(0, 0, 0, 0.45);
 }
 
-/* Reset & Base */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -92,7 +88,6 @@ button, select, input {
   font-size: inherit;
 }
 
-/* Layout Containers */
 .container {
   max-width: 1260px;
   margin: 0 auto;
@@ -356,7 +351,8 @@ button, select, input {
   user-select: none;
 }
 
-.map-pin {
+.map-pin,
+.c13-stop-node {
   cursor: pointer;
   transition: transform 0.2s ease;
   transform-origin: center;
@@ -364,7 +360,9 @@ button, select, input {
 }
 
 .map-pin:hover,
-.map-pin.active-pin {
+.map-pin.active-pin,
+.c13-stop-node:hover,
+.c13-stop-node.active-node {
   transform: scale(1.2);
 }
 
@@ -399,7 +397,7 @@ button, select, input {
   font-weight: 700;
 }
 
-/* Inspector Panel */
+/* Inspector & Details */
 .inspector-meta-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -586,6 +584,7 @@ button, select, input {
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   font-weight: 600;
+  font-size: 0.75rem;
 }
 
 .price-label {
@@ -620,7 +619,123 @@ button, select, input {
   font-size: 0.78rem;
 }
 
-/* Itinerary Section */
+/* ==========================================================================
+   COMUNA 13 INTERACTIVE WALKING TOUR (VoiceMap / Bloomberg Connects Style)
+   ========================================================================== */
+.audio-guide-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.stop-stepper-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.step-dot-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.step-dot-btn.active {
+  background-color: var(--brand-primary);
+  color: var(--brand-primary-fg);
+  border-color: var(--brand-primary);
+  transform: scale(1.08);
+}
+
+.step-dot-btn.completed {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+
+.era-timeline-nav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .era-timeline-nav {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.era-btn {
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.era-btn strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--brand-primary);
+}
+
+.era-btn span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.era-btn.active {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+
+.era-btn.active strong,
+.era-btn.active span {
+  color: var(--brand-primary-fg);
+}
+
+.mural-decoder-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+@media (min-width: 680px) {
+  .mural-decoder-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mural-decoder-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Itinerary & Tables */
 .metrics-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -687,7 +802,6 @@ button, select, input {
   font-size: 0.82rem;
 }
 
-/* Two-Column Layouts for Metro & Culture Tabs */
 .two-col-grid {
   display: grid;
   grid-template-columns: 1fr;
