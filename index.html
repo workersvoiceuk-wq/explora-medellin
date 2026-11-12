@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Explora Medellín — Guía Turística Interactiva del Valle de Aburrá</title>
-  <meta name="description" content="Aplicación web turística de Medellín, Colombia: mapa interactivo del Valle de Aburrá, rutas del Metro y Metrocable, planificador de itinerarios, gastronomía paisa y calculadora de presupuesto." />
+  <title>Explora Medellín — Guía Turística Interactiva (ES · EN · PT · FR)</title>
+  <meta name="description" content="Aplicación web turística multilingüe (Español, English, Português, Français) de Medellín, Colombia: mapa interactivo del Valle de Aburrá, rutas del Metro y Metrocable, planificador de itinerarios, gastronomía paisa y calculadora de presupuesto." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,47 +16,56 @@
         <div class="brand-group">
           <div class="brand-mark" aria-hidden="true">MDE</div>
           <div>
-            <h1 class="brand-title">Explora Medellín</h1>
-            <p class="brand-subtitle">Ciudad de la Eterna Primavera · 1.495 m s.n.m. · Valle de Aburrá, Colombia</p>
+            <h1 id="ui-brand-title" class="brand-title">Explora Medellín</h1>
+            <p id="ui-brand-subtitle" class="brand-subtitle">Ciudad de la Eterna Primavera · 1.495 m s.n.m. · Valle de Aburrá, Colombia</p>
           </div>
         </div>
 
         <div class="header-controls">
-          <div class="climate-pill" title="Clima templado de montaña durante todo el año">
-            <span>☀️ <strong>18°C – 28°C</strong> · Clima Primaveral</span>
+          <div class="climate-pill" title="18°C – 28°C">
+            <span id="ui-climate-badge">☀️ <strong>18°C – 28°C</strong> · Clima Primaveral</span>
+          </div>
+
+          <!-- Selector de Idioma (ES / EN / PT / FR) -->
+          <div class="segmented-control" role="group" aria-label="Language selector">
+            <button id="lang-es" type="button" data-lang="es" class="segment-btn lang-btn active">ES</button>
+            <button id="lang-en" type="button" data-lang="en" class="segment-btn lang-btn">EN</button>
+            <button id="lang-pt" type="button" data-lang="pt" class="segment-btn lang-btn">PT</button>
+            <button id="lang-fr" type="button" data-lang="fr" class="segment-btn lang-btn">FR</button>
+          </div>
+
+          <!-- Selector de Moneda (COP / USD / EUR) -->
+          <div class="segmented-control" role="group" aria-label="Currency selector">
+            <button id="curr-COP" type="button" data-currency="COP" class="segment-btn curr-btn active">COP $</button>
+            <button id="curr-USD" type="button" data-currency="USD" class="segment-btn curr-btn">USD</button>
+            <button id="curr-EUR" type="button" data-currency="EUR" class="segment-btn curr-btn">EUR</button>
           </div>
 
           <button id="btn-filter-favorites" type="button" class="btn-outline">
-            <span>♥ Guardados</span>
+            <span id="ui-fav-btn-label">♥ Guardados</span>
             <span id="fav-count-badge" class="badge-count">3</span>
           </button>
 
-          <div class="segmented-control" role="group" aria-label="Selector de moneda">
-            <button id="curr-COP" type="button" data-currency="COP" class="segment-btn active">COP $</button>
-            <button id="curr-USD" type="button" data-currency="USD" class="segment-btn">USD</button>
-            <button id="curr-EUR" type="button" data-currency="EUR" class="segment-btn">EUR</button>
-          </div>
-
-          <button id="btn-theme-toggle" type="button" class="btn-outline" aria-label="Cambiar tema de color">
+          <button id="btn-theme-toggle" type="button" class="btn-outline" aria-label="Toggle color theme">
             <span id="theme-toggle-label">Modo Oscuro</span>
           </button>
         </div>
       </div>
 
       <!-- Navegación por Pestañas -->
-      <nav aria-label="Secciones principales" class="main-nav">
+      <nav aria-label="Main sections" class="main-nav">
         <button id="tab-btn-explorar" type="button" data-tab="explorar" class="nav-tab active">
-          <span>🗺️ Destinos &amp; Mapa del Valle</span>
+          <span id="ui-tab-explorar">🗺️ Destinos &amp; Mapa</span>
         </button>
         <button id="tab-btn-itinerario" type="button" data-tab="itinerario" class="nav-tab">
-          <span>📅 Planificador de Itinerario</span>
+          <span id="ui-tab-itinerario">📅 Mi Itinerario</span>
           <span id="itinerary-count-pill" class="badge-count">8</span>
         </button>
         <button id="tab-btn-metro" type="button" data-tab="metro" class="nav-tab">
-          <span>🚝 Rutas Metro &amp; Metrocable</span>
+          <span id="ui-tab-metro">🚝 Metro &amp; Metrocable</span>
         </button>
         <button id="tab-btn-cultura" type="button" data-tab="cultura" class="nav-tab">
-          <span>☕ Gastronomía &amp; Presupuesto</span>
+          <span id="ui-tab-cultura">☕ Gastronomía &amp; Presupuesto</span>
         </button>
       </nav>
     </div>
@@ -75,70 +84,41 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="section-title">Mapa Interactivo del Valle de Aburrá y Cercanías</h2>
-              <p class="section-subtitle">Selecciona cualquier marcador numerado para ver estación del Metro, costos y consejos locales.</p>
+              <h2 id="ui-map-title" class="section-title">Mapa Interactivo del Valle de Aburrá y Cercanías</h2>
+              <p id="ui-map-subtitle" class="section-subtitle">Selecciona cualquier marcador numerado para ver estación del Metro, costos y consejos locales.</p>
             </div>
             <div class="map-legend">
-              <span class="legend-item"><span class="legend-dot" style="background: var(--accent-metro);"></span> Metro A/B</span>
-              <span class="legend-item"><span class="legend-dot" style="background: var(--accent-cable);"></span> Metrocable</span>
-              <span class="legend-item"><span class="legend-dot" style="background: var(--brand-primary);"></span> Seleccionado</span>
+              <span class="legend-item"><span class="legend-dot" style="background: var(--accent-metro);"></span> <span id="ui-legend-metro">Metro A/B</span></span>
+              <span class="legend-item"><span class="legend-dot" style="background: var(--accent-cable);"></span> <span id="ui-legend-cable">Metrocable</span></span>
+              <span class="legend-item"><span class="legend-dot" style="background: var(--brand-primary);"></span> <span id="ui-legend-selected">Activo</span></span>
             </div>
           </div>
 
           <div class="map-frame">
-            <svg id="medellin-valley-map" viewBox="0 0 680 390" class="valley-svg" role="img" aria-label="Mapa interactivo de los destinos turísticos de Medellín y el Valle de Aburrá">
-              <!-- Relieve de las laderas occidental y oriental -->
+            <svg id="medellin-valley-map" viewBox="0 0 680 390" class="valley-svg" role="img" aria-label="Interactive map of Medellín and Aburrá Valley">
               <path d="M0,0 L165,0 C145,80 155,160 135,240 C120,310 140,350 150,390 L0,390 Z" fill="var(--bg-surface)" opacity="0.7" />
               <path d="M680,0 L430,0 C410,75 425,150 405,230 C390,300 415,345 430,390 L680,390 Z" fill="var(--bg-surface)" opacity="0.7" />
               <path d="M680,0 L515,0 C505,110 510,240 525,390 L680,390 Z" fill="var(--bg-surface)" opacity="0.92" />
 
-              <!-- Etiquetas geográficas -->
-              <text x="18" y="30" fill="var(--text-muted)" font-size="11" font-weight="700">OCCIDENTE (Laderas)</text>
-              <text x="235" y="26" fill="var(--text-muted)" font-size="11" font-weight="700">NORTE · Río Medellín</text>
-              <text x="250" y="376" fill="var(--text-muted)" font-size="11" font-weight="700">SUR · El Poblado / Envigado</text>
-              <text x="495" y="30" fill="var(--text-muted)" font-size="11" font-weight="700">ORIENTE ANTIOQUEÑO</text>
+              <text id="svg-label-west" x="18" y="30" fill="var(--text-muted)" font-size="11" font-weight="700">OCCIDENTE (Laderas)</text>
+              <text id="svg-label-north" x="235" y="26" fill="var(--text-muted)" font-size="11" font-weight="700">NORTE · Río Medellín</text>
+              <text id="svg-label-south" x="250" y="376" fill="var(--text-muted)" font-size="11" font-weight="700">SUR · El Poblado / Envigado</text>
+              <text id="svg-label-east" x="495" y="30" fill="var(--text-muted)" font-size="11" font-weight="700">ORIENTE ANTIOQUEÑO</text>
 
-              <!-- Río Medellín (Sur a Norte) -->
               <path d="M275,390 C272,320 285,260 280,195 C275,130 292,70 300,0" fill="none" stroke="var(--accent-metro)" stroke-width="7" stroke-linecap="round" opacity="0.2" />
-
-              <!-- Línea A del Metro (Norte-Sur) -->
               <path d="M306,18 L294,105 L288,185 L284,245 L288,325 L282,375" fill="none" stroke="var(--accent-metro)" stroke-width="3.5" stroke-linecap="round" />
-
-              <!-- Línea B del Metro (San Antonio a San Javier) -->
               <path d="M288,185 L210,185 L132,175" fill="none" stroke="var(--accent-metro)" stroke-width="3" stroke-dasharray="6 3" stroke-linecap="round" />
-
-              <!-- Metrocables K y L (Acevedo -> Santo Domingo -> Parque Arví) -->
               <path d="M302,58 L395,66 L505,78" fill="none" stroke="var(--accent-cable)" stroke-width="2.5" stroke-dasharray="4 3" />
-
-              <!-- Tranvía de Ayacucho (San Antonio -> Oriente) -->
               <path d="M288,185 L385,192 L435,175" fill="none" stroke="var(--accent-cable)" stroke-width="2.5" stroke-dasharray="4 3" />
-
-              <!-- Rutas de Excursión -->
               <path d="M435,175 L595,155" fill="none" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="3 3" />
               <path d="M132,175 L55,85" fill="none" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="3 3" />
 
-              <!-- Marcadores dinámicos -->
               <g id="map-pins-layer"></g>
             </svg>
           </div>
 
-          <div class="valley-stats-row">
-            <div class="stat-mini">
-              <span>Altitud Centro</span>
-              <strong>1.495 m s.n.m.</strong>
-            </div>
-            <div class="stat-mini">
-              <span>Altitud Santa Elena</span>
-              <strong>2.500 m s.n.m.</strong>
-            </div>
-            <div class="stat-mini">
-              <span>Eje Fluvial</span>
-              <strong>Río Medellín (S → N)</strong>
-            </div>
-            <div class="stat-mini">
-              <span>Movilidad</span>
-              <strong>Tarjeta Cívica SITVA</strong>
-            </div>
+          <div id="valley-stats-container" class="valley-stats-row">
+            <!-- Renderizado por app.js -->
           </div>
         </div>
 
@@ -151,20 +131,14 @@
       <!-- Barra de Filtros y Búsqueda -->
       <div class="card">
         <div class="filter-bar">
-          <div id="category-filters" class="category-pills" role="group" aria-label="Filtrar destinos por categoría">
-            <button id="cat-all" type="button" data-category="all" class="pill-btn active">Todos (12)</button>
-            <button id="cat-cultura" type="button" data-category="Cultura & Arte" class="pill-btn">Cultura &amp; Arte</button>
-            <button id="cat-naturaleza" type="button" data-category="Naturaleza & Miradores" class="pill-btn">Naturaleza &amp; Miradores</button>
-            <button id="cat-barrios" type="button" data-category="Barrios & Vida Local" class="pill-btn">Barrios &amp; Vida Local</button>
-            <button id="cat-excursiones" type="button" data-category="Excursiones" class="pill-btn">Excursiones (1 Día)</button>
+          <div id="category-filters" class="category-pills" role="group" aria-label="Category filter">
+            <!-- Renderizado por app.js -->
           </div>
 
           <div class="search-controls">
-            <input id="search-destinations" type="search" class="input-field" placeholder="Buscar lugar, barrio, estación..." aria-label="Buscar destino turístico" />
-            <select id="cost-filter" class="select-field" aria-label="Filtrar por presupuesto">
-              <option value="all">Cualquier costo</option>
-              <option value="free">Entrada gratuita</option>
-              <option value="budget">Económico (&le; $50.000 COP)</option>
+            <input id="search-destinations" type="search" class="input-field" placeholder="Buscar lugar, barrio, estación..." aria-label="Search destinations" />
+            <select id="cost-filter" class="select-field" aria-label="Filter by budget">
+              <!-- Renderizado por app.js -->
             </select>
           </div>
         </div>
@@ -183,8 +157,8 @@
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 class="section-title">Planificador de Itinerario Personalizado</h2>
-            <p class="section-subtitle">Carga una ruta recomendada o añade paradas a medida para organizar tus días en Medellín.</p>
+            <h2 id="ui-itin-title" class="section-title">Planificador de Itinerario Personalizado</h2>
+            <p id="ui-itin-subtitle" class="section-subtitle">Carga una ruta recomendada o añade paradas a medida para organizar tus días en Medellín.</p>
           </div>
           <div class="category-pills">
             <button id="preset-1day" type="button" data-preset="1day" class="pill-btn preset-btn">Exprés (1 Día)</button>
@@ -198,33 +172,28 @@
 
         <div class="metrics-row">
           <div class="metric-card">
-            <span>Duración del Plan</span>
+            <span id="ui-itin-lbl-days">Duración del Plan</span>
             <strong id="itin-stat-days">3 Días</strong>
           </div>
           <div class="metric-card">
-            <span>Paradas Totales</span>
+            <span id="ui-itin-lbl-stops">Paradas Totales</span>
             <strong id="itin-stat-stops">8 Lugares</strong>
           </div>
           <div class="metric-card">
-            <span>Tiempo Activo Est.</span>
+            <span id="ui-itin-lbl-hours">Tiempo Activo Est.</span>
             <strong id="itin-stat-hours">26.5 h</strong>
           </div>
           <div class="metric-card">
-            <span>Costo Entradas / Tours</span>
+            <span id="ui-itin-lbl-cost">Costo Entradas / Tours</span>
             <strong id="itin-stat-cost">$320.500 COP</strong>
           </div>
         </div>
 
         <div class="add-stop-bar">
-          <strong>Añadir parada:</strong>
-          <select id="itin-add-day-select" class="select-field" aria-label="Día del itinerario"></select>
-          <select id="itin-add-dest-select" class="select-field" aria-label="Destino turístico"></select>
-          <select id="itin-add-slot-select" class="select-field" aria-label="Franja horaria">
-            <option value="Mañana (08:30)">Mañana (08:30)</option>
-            <option value="Mediodía (12:30)">Mediodía (12:30)</option>
-            <option value="Tarde (15:00)">Tarde (15:00)</option>
-            <option value="Noche (19:30)">Noche (19:30)</option>
-          </select>
+          <strong id="ui-itin-add-label">Añadir parada:</strong>
+          <select id="itin-add-day-select" class="select-field" aria-label="Day"></select>
+          <select id="itin-add-dest-select" class="select-field" aria-label="Destination"></select>
+          <select id="itin-add-slot-select" class="select-field" aria-label="Time slot"></select>
           <button id="btn-itin-add-stop" type="button" class="btn-primary">+ Agregar al Día</button>
         </div>
 
@@ -244,32 +213,19 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="section-title">Simulador de Trayectos en Metro y Metrocable</h2>
-              <p class="section-subtitle">Descubre cómo conectar entre tu alojamiento y los principales atractivos usando el sistema integrado SITVA.</p>
+              <h2 id="ui-metro-title" class="section-title">Simulador de Trayectos en Metro y Metrocable</h2>
+              <p id="ui-metro-subtitle" class="section-subtitle">Descubre cómo conectar entre tu alojamiento y los principales atractivos usando el sistema integrado SITVA.</p>
             </div>
           </div>
 
           <div class="inspector-meta-grid">
             <div>
-              <label for="metro-origin" class="meta-box-label">Estación de Origen</label>
-              <select id="metro-origin" class="select-field" style="width: 100%;">
-                <option value="poblado" selected>El Poblado (Línea A - Sur)</option>
-                <option value="estadio">Estadio / Laureles (Línea B)</option>
-                <option value="berrio">Parque Berrío / Centro (Línea A)</option>
-                <option value="universidad">Universidad / Zona Norte (Línea A)</option>
-                <option value="sanjavier">San Javier / Comuna 13 (Línea B)</option>
-              </select>
+              <label id="ui-metro-origin-lbl" for="metro-origin" class="meta-box-label">Estación de Origen</label>
+              <select id="metro-origin" class="select-field" style="width: 100%;"></select>
             </div>
             <div>
-              <label for="metro-dest" class="meta-box-label">Destino Turístico</label>
-              <select id="metro-dest" class="select-field" style="width: 100%;">
-                <option value="comuna13" selected>Comuna 13 (Escaleras Eléctricas)</option>
-                <option value="arvi">Parque Arví (Metrocable Línea L)</option>
-                <option value="botero">Plaza Botero &amp; Museo de Antioquia</option>
-                <option value="botanico">Jardín Botánico &amp; Parque Explora</option>
-                <option value="tranvia">Tranvía de Ayacucho &amp; Museo Memoria</option>
-                <option value="guatape">Terminal del Norte (Buses a Guatapé)</option>
-              </select>
+              <label id="ui-metro-dest-lbl" for="metro-dest" class="meta-box-label">Destino Turístico</label>
+              <select id="metro-dest" class="select-field" style="width: 100%;"></select>
             </div>
           </div>
 
@@ -277,105 +233,13 @@
             <!-- Renderizado por app.js -->
           </div>
 
-          <h3 class="section-title" style="margin: 1rem 0 0.5rem;">Líneas Esenciales del Sistema</h3>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Línea</th>
-                <th>Recorrido</th>
-                <th>Atractivos Conectados</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Línea A</strong></td>
-                <td>Niquía ↔ La Estrella</td>
-                <td>El Poblado, Parque Berrío (Botero), Universidad (Explora), Caribe</td>
-              </tr>
-              <tr>
-                <td><strong>Línea B</strong></td>
-                <td>San Antonio ↔ San Javier</td>
-                <td>Laureles / La 70 (Estadio), Comuna 13 (San Javier)</td>
-              </tr>
-              <tr>
-                <td><strong>Cables K + L</strong></td>
-                <td>Acevedo → Santo Domingo → Arví</td>
-                <td>Miradores del nororiente y Reserva Parque Arví (Santa Elena)</td>
-              </tr>
-              <tr>
-                <td><strong>Tranvía T-A</strong></td>
-                <td>San Antonio ↔ Oriente</td>
-                <td>Corredor artístico de Ayacucho y Museo Casa de la Memoria</td>
-              </tr>
-            </tbody>
-          </table>
+          <h3 id="ui-metro-lines-heading" class="section-title" style="margin: 1rem 0 0.5rem;">Líneas Esenciales del Sistema</h3>
+          <div id="metro-lines-table-wrap"></div>
         </div>
 
         <!-- Cultura Metro y Comparativa de Barrios -->
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h2 class="section-title">Guía Práctica: Cultura Metro y Dónde Hospedarse</h2>
-              <p class="section-subtitle">Recomendaciones locales de seguridad, clima y elección de barrio.</p>
-            </div>
-          </div>
-
-          <div class="inspector-meta-grid">
-            <div class="meta-box">
-              <strong>1. Tarjeta Cívica Eventual</strong>
-              <p class="section-subtitle">Adquiérela en cualquier taquilla presentando tu pasaporte o documento para recargar saldo y hacer trasbordos ágiles.</p>
-            </div>
-            <div class="meta-box">
-              <strong>2. "No dar papaya" (Cuidado básico)</strong>
-              <p class="section-subtitle">En el Centro (La Candelaria) evita llevar objetos de valor a la vista y realiza tus recorridos culturales entre las 09:00 y las 17:00.</p>
-            </div>
-            <div class="meta-box">
-              <strong>3. Conexión Aeropuerto JMC (Rionegro)</strong>
-              <p class="section-subtitle">A 35 minutos por el Túnel de Oriente. Buses oficiales 24 horas hacia San Diego (Exposiciones) y taxis con tarifa regulada.</p>
-            </div>
-            <div class="meta-box">
-              <strong>4. Empaca por capas</strong>
-              <p class="section-subtitle">Camiseta fresca para el valle (25°C), paraguas compacto para lluvias pasajeras y chaqueta para subir a Santa Elena (14°C).</p>
-            </div>
-          </div>
-
-          <h3 class="section-title" style="margin: 1rem 0 0.5rem;">Comparativa de Zonas para Alojarse</h3>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Sector</th>
-                <th>Ambiente</th>
-                <th>Caminabilidad</th>
-                <th>Ideal para</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>El Poblado (Provenza/Manila)</strong></td>
-                <td>Cosmopolita, frondoso, gastronómico</td>
-                <td>Media (laderas)</td>
-                <td>Primera visita, hoteles boutique, vida nocturna</td>
-              </tr>
-              <tr>
-                <td><strong>Laureles / Conquistadores</strong></td>
-                <td>Residencial, parques circulares, auténtico</td>
-                <td>Alta (terreno plano)</td>
-                <td>Cafés de barrio, salsa en La 70, estancias largas</td>
-              </tr>
-              <tr>
-                <td><strong>Envigado (Buena Mesa)</strong></td>
-                <td>Tradicional, tranquilo, familiar</td>
-                <td>Alta</td>
-                <td>Viajeros que buscan calma y cocina local</td>
-              </tr>
-              <tr>
-                <td><strong>Ciudad del Río</strong></td>
-                <td>Moderno, museos (MAMM), parques</td>
-                <td>Alta</td>
-                <td>Arte contemporáneo y cercanía a El Poblado</td>
-              </tr>
-            </tbody>
-          </table>
+        <div id="metro-practical-guide-card" class="card">
+          <!-- Renderizado por app.js -->
         </div>
 
       </div>
@@ -391,8 +255,8 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="section-title">Sabores de Antioquia: Ruta Gastronómica</h2>
-              <p class="section-subtitle">Platos típicos imperdibles y precios promedio actualizados a la moneda seleccionada.</p>
+              <h2 id="ui-gastro-title" class="section-title">Sabores de Antioquia: Ruta Gastronómica</h2>
+              <p id="ui-gastro-subtitle" class="section-subtitle">Platos típicos imperdibles y precios promedio actualizados a la moneda seleccionada.</p>
             </div>
           </div>
           <div id="gastronomy-grid" class="gastronomy-grid">
@@ -404,31 +268,31 @@
         <div class="card">
           <div class="card-header">
             <div>
-              <h2 class="section-title">Calculadora de Presupuesto de Viaje</h2>
-              <p class="section-subtitle">Ajusta duración, número de viajeros y categoría para estimar el presupuesto total.</p>
+              <h2 id="ui-budget-title" class="section-title">Calculadora de Presupuesto de Viaje</h2>
+              <p id="ui-budget-subtitle" class="section-subtitle">Ajusta duración, número de viajeros y categoría para estimar el presupuesto total.</p>
             </div>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 1rem;">
             <div>
               <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
-                <label for="budget-days"><strong>Días de estadía en Medellín</strong></label>
-                <span id="budget-days-val" class="price-label">4 días</span>
+                <label for="budget-days"><strong id="ui-budget-days-lbl">Días de estadía en Medellín</strong></label>
+                <span id="budget-days-val" class="price-label">4</span>
               </div>
               <input id="budget-days" type="range" min="1" max="14" value="4" />
             </div>
 
             <div>
               <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
-                <label for="budget-travelers"><strong>Número de viajeros</strong></label>
-                <span id="budget-travelers-val" class="price-label">2 personas</span>
+                <label for="budget-travelers"><strong id="ui-budget-travelers-lbl">Número de viajeros</strong></label>
+                <span id="budget-travelers-val" class="price-label">2</span>
               </div>
               <input id="budget-travelers" type="range" min="1" max="6" value="2" />
             </div>
 
             <div>
-              <span class="meta-box-label" style="margin-bottom: 0.4rem;">Estilo de viaje</span>
-              <div class="category-pills" role="group" aria-label="Seleccionar estilo de viaje">
+              <span id="ui-budget-style-lbl" class="meta-box-label" style="margin-bottom: 0.4rem;">Estilo de viaje</span>
+              <div class="category-pills" role="group" aria-label="Travel style">
                 <button id="style-backpacker" type="button" data-style="backpacker" class="pill-btn style-btn">Mochilero / Hostal</button>
                 <button id="style-comfort" type="button" data-style="comfort" class="pill-btn style-btn active">Confort / Boutique</button>
                 <button id="style-luxury" type="button" data-style="luxury" class="pill-btn style-btn">Premium / Lujo</button>
@@ -441,11 +305,11 @@
 
             <div class="inspector-meta-grid" style="margin-bottom: 0;">
               <div class="metric-card">
-                <span>Total Estimado del Grupo</span>
+                <span id="ui-budget-total-lbl">Total Estimado del Grupo</span>
                 <strong id="budget-total-group">$3.440.000 COP</strong>
               </div>
               <div class="metric-card">
-                <span>Promedio por Persona / Día</span>
+                <span id="ui-budget-perday-lbl">Promedio por Persona / Día</span>
                 <strong id="budget-per-person-day">$430.000 COP</strong>
               </div>
             </div>
@@ -459,7 +323,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p><strong>Explora Medellín</strong> — Guía Turística Interactiva del Valle de Aburrá, Antioquia, Colombia.</p>
+      <p id="ui-footer-text"><strong>Explora Medellín</strong> — Guía Turística Interactiva del Valle de Aburrá, Antioquia, Colombia (ES · EN · PT · FR).</p>
     </div>
   </footer>
 
